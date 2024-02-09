@@ -105,6 +105,9 @@ fn fight(fighter_name: String, mut fighter: Box<dyn Character>, mut enemy: Box<d
     // fight until one of the characters has no health left
     while first.get_health() > 0 && second.get_health() > 0 {
         first.attack(&mut *second);
+        if second.get_health() <= 0 {
+            break;
+        }
         second.attack(&mut *first);
 
         // wait for the user to press enter before continuing

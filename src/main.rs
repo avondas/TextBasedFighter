@@ -1,5 +1,5 @@
 mod structs;
-
+extern crate rand;
 use std::io;
 use structs::character::{Character, Druid, Fighter, Assassin, Orc, Drow, Goblin};
 use rand::seq::SliceRandom;

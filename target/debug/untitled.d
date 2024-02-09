@@ -1,1 +1,1 @@
-C:\Users\avien\source\RustroverProjects\Text\ Based\ Fighter\target\debug\untitled.exe: C:\Users\avien\source\RustroverProjects\Text\ Based\ Fighter\src\main.rs
+C:\Users\avien\source\RustroverProjects\TextBasedFighter\target\debug\untitled.exe: C:\Users\avien\source\RustroverProjects\TextBasedFighter\src\main.rs C:\Users\avien\source\RustroverProjects\TextBasedFighter\src\structs\character.rs C:\Users\avien\source\RustroverProjects\TextBasedFighter\src\structs\mod.rs C:\Users\avien\source\RustroverProjects\TextBasedFighter\src\structs\weapon.rs

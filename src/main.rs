@@ -7,9 +7,13 @@ use rand::thread_rng;
 
 
 fn main() {
+    // have user choose the hero and the enemy
     let fighter = choose_hero();
     let enemy = choose_enemy();
+
+    // pass the hero name along for checking the defeat condition
     let fighter_name = fighter.get_name();
+
     fight(fighter_name, fighter, enemy);
 }
 
@@ -98,6 +102,7 @@ fn fight(fighter_name: String, mut fighter: Box<dyn Character>, mut enemy: Box<d
         second = fighter;
     }
 
+    // fight until one of the characters has no health left
     while first.get_health() > 0 && second.get_health() > 0 {
         first.attack(&mut *second);
         second.attack(&mut *first);
@@ -107,6 +112,7 @@ fn fight(fighter_name: String, mut fighter: Box<dyn Character>, mut enemy: Box<d
         io::stdin().read_line(&mut input).expect("error: unable to read user input");
     }
 
+    // print the result of the fight
     if first.get_health() > 0 && first.get_name() == fighter_name {
         println!("You win!");
     } else if second.get_health() > 0 && second.get_name() == fighter_name {

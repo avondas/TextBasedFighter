@@ -1,6 +1,5 @@
 mod structs;
 
-use rand::seq::SliceRandom;
 use std::io;
 use structs::character::{Character, Druid, Fighter, Assassin, Orc, Drow, Goblin};
 
@@ -74,11 +73,15 @@ fn choose_enemy() -> Box<dyn Character> {
 
 fn fight(mut fighter: Box<dyn Character>, mut enemy: Box<dyn Character>) {
 
-    print!("You are fighting a {}!\n", enemy.get_name());
+    print!("You are fighting a(n) {}!\n\n", enemy.get_name());
 
     while fighter.get_health() > 0 && enemy.get_health() > 0 {
         fighter.attack(&mut *enemy);
         enemy.attack(&mut *fighter);
+
+        // wait for the user to press enter before continuing
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("error: unable to read user input");
     }
 
     if fighter.get_health() > 0 {

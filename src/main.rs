@@ -2,11 +2,15 @@ mod structs;
 
 use std::io;
 use structs::character::{Character, Druid, Fighter, Assassin, Orc, Drow, Goblin};
+use rand::seq::SliceRandom;
+use rand::thread_rng;
+
 
 fn main() {
     let fighter = choose_hero();
     let enemy = choose_enemy();
-    fight(fighter, enemy);
+    let fighter_name = fighter.get_name();
+    fight(fighter_name, fighter, enemy);
 }
 
 fn choose_hero() -> Box<dyn Character> {
@@ -71,22 +75,57 @@ fn choose_enemy() -> Box<dyn Character> {
     }
 }
 
-fn fight(mut fighter: Box<dyn Character>, mut enemy: Box<dyn Character>) {
+fn fight(fighter_name: String, mut fighter: Box<dyn Character>, mut enemy: Box<dyn Character>) {
 
     print!("You are fighting a(n) {}!\n\n", enemy.get_name());
 
-    while fighter.get_health() > 0 && enemy.get_health() > 0 {
-        fighter.attack(&mut *enemy);
-        enemy.attack(&mut *fighter);
+    // decide who goes first
+    let mut first_up = first_to_go(&mut fighter, &mut enemy);
+    print!("{} goes first!\n\n", first_up.get_name());
+
+    // instantiate the first character
+    let mut first;
+
+    // instantiate the second character
+    let mut second;
+
+    // make sure they go up in the right order
+    if first_up.get_name() == fighter.get_name() {
+        first = fighter;
+        second = enemy;
+    } else {
+        first = enemy;
+        second = fighter;
+    }
+
+    while first.get_health() > 0 && second.get_health() > 0 {
+        first.attack(&mut *second);
+        second.attack(&mut *first);
 
         // wait for the user to press enter before continuing
         let mut input = String::new();
         io::stdin().read_line(&mut input).expect("error: unable to read user input");
     }
 
-    if fighter.get_health() > 0 {
+    if first.get_health() > 0 && first.get_name() == fighter_name {
+        println!("You win!");
+    } else if second.get_health() > 0 && second.get_name() == fighter_name {
         println!("You win!");
     } else {
         println!("You lose!");
+    }
+}
+
+fn first_to_go<'a>(mut fighter: &'a mut Box<dyn Character>, mut enemy: &'a mut Box<dyn Character>) -> &'a mut Box<dyn Character> {
+    // decide who goes first by shuffling the order
+    let mut rng = thread_rng();
+    let mut order = vec![&fighter, &enemy];
+    order.shuffle(&mut rng);
+
+    // return the first character
+    if order[0].get_name() == fighter.get_name() {
+        return fighter;
+    } else {
+        return enemy;
     }
 }
